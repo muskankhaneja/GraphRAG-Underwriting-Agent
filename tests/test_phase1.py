@@ -46,6 +46,9 @@ from src.phase1_quantitative.inference import CreditRiskPredictor
 
 MOCK_FEATURES = {col: 1.0 for col in FEATURE_COLUMNS}
 
+# Sanity-check: ensure MOCK_FEATURES keys match actual feature columns
+assert set(MOCK_FEATURES.keys()) == set(FEATURE_COLUMNS)
+
 
 @pytest.fixture
 def tmp_artifacts(tmp_path: Path) -> dict:
@@ -274,8 +277,9 @@ class TestCreditRiskPredictor:
 class TestEdgeCases:
 
     def test_missing_single_feature_raises_value_error(self, predictor: CreditRiskPredictor):
-        incomplete = {k: v for k, v in MOCK_FEATURES.items() if k != "currentRatio"}
-        with pytest.raises(ValueError, match="currentRatio"):
+        drop_key = FEATURE_COLUMNS[0]  # "Current Ratio"
+        incomplete = {k: v for k, v in MOCK_FEATURES.items() if k != drop_key}
+        with pytest.raises(ValueError, match=drop_key):
             predictor.predict(incomplete)
 
     def test_missing_multiple_features_raises_value_error(self, predictor: CreditRiskPredictor):
@@ -295,7 +299,7 @@ class TestEdgeCases:
 
     def test_nan_value_replaced_by_train_median(self, predictor: CreditRiskPredictor):
         features_with_nan = dict(MOCK_FEATURES)
-        features_with_nan["debtEquityRatio"] = float("nan")
+        features_with_nan["Debt/Equity Ratio"] = float("nan")
         result = predictor.predict(features_with_nan)  # must not raise
         assert 0.0 <= result["probability_of_speculative"] <= 1.0
 

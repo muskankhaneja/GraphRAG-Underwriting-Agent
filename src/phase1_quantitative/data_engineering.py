@@ -53,37 +53,27 @@ SPECULATIVE_GRADE = {
 
 ALL_KNOWN_RATINGS = INVESTMENT_GRADE | SPECULATIVE_GRADE
 
-# 25 numeric feature columns expected in the dataset
+# Numeric feature columns — exact names as they appear in the CSV
 FEATURE_COLUMNS = [
-    "currentRatio",
-    "quickRatio",
-    "cashRatio",
-    "daysOfSalesOutstanding",
-    "netProfitMargin",
-    "pretaxProfitMargin",
-    "grossProfitMargin",
-    "operatingProfitMargin",
-    "returnOnAssets",
-    "returnOnEquity",
-    "returnOnCapitalEmployed",
-    "netIncomePerEBT",
-    "ebtPerEbit",
-    "ebitPerRevenue",
-    "debtRatio",
-    "debtEquityRatio",
-    "longTermDebtToCapitalization",
-    "totalDebtToCapitalization",
-    "interestCoverage",
-    "cashFlowToDebtRatio",
-    "companyEquityMultiplier",
-    "receivablesTurnover",
-    "payablesTurnover",
-    "inventoryTurnover",
-    "fixedAssetTurnover",
-    "assetTurnover",
+    "Current Ratio",
+    "Long-term Debt / Capital",
+    "Debt/Equity Ratio",
+    "Gross Margin",
+    "Operating Margin",
+    "EBIT Margin",
+    "EBITDA Margin",
+    "Pre-Tax Profit Margin",
+    "Net Profit Margin",
+    "Asset Turnover",
+    "ROE - Return On Equity",
+    "Return On Tangible Equity",
+    "ROA - Return On Assets",
+    "ROI - Return On Investment",
+    "Operating Cash Flow Per Share",
+    "Free Cash Flow Per Share",
 ]
 
-METADATA_COLUMNS = ["Ticker", "Name", "Sector", "Rating"]
+METADATA_COLUMNS = ["Ticker", "Corporation", "Sector", "Rating"]
 
 
 # ---------------------------------------------------------------------------
@@ -92,7 +82,7 @@ METADATA_COLUMNS = ["Ticker", "Name", "Sector", "Rating"]
 
 def _download_dataset() -> Path:
     """Download the S&P 500 credit rating dataset via the Kaggle CLI."""
-    dataset_slug = "kirtandelwadia/sp-500-with-financial-ratios"
+    dataset_slug = "kirtandelwadia/corporate-credit-rating-with-financial-ratios"
     zip_path = RAW_DIR / "sp500-credit-ratings.zip"
 
     if not zip_path.exists():
